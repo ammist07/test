@@ -1,6 +1,6 @@
+/* eslint-disable react/prop-types */
 import React, { useReducer } from 'react'
 
-// eslint-disable-next-line import/no-anonymous-default-export
 export default (reducer, actions, initialState) => {
 
     const Context = React.createContext()
@@ -10,12 +10,12 @@ export default (reducer, actions, initialState) => {
         
         const boundActions = {}
         Object.keys(actions).forEach((key) => {
-			boundActions[key] = actions[key](dispatch)
-		})
+            boundActions[key] = actions[key](dispatch)
+        })
         return (
             <Context.Provider value={{ state, ...boundActions }}>
-				{children}
-			</Context.Provider>
+                {children}
+            </Context.Provider>
         )
 
     }

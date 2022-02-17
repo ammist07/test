@@ -1,0 +1,12 @@
+
+version: '3.8'
+services:
+    mongo:
+        image: mongo:latest
+        container_name: 'mongo-test'
+        environment:
+            MONGO_INITDB_DATABASE: mongo-test
+        volumes:
+            - ./mongodb-docker:/data/db
+        ports:
+            - 27017:27017

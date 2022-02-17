@@ -1,11 +1,11 @@
-import React, { useContext } from "react";
-import { Navigate, Outlet } from "react-router-dom";
-import { Context as UserContext } from "../Context/UserContext";
+import React, { useContext } from 'react'
+import { Navigate, Outlet } from 'react-router-dom'
+import { Context as UserContext } from '../context/UserContext'
 
 const Protected = () => {
-    const userContext = useContext(UserContext);
+    const userContext = useContext(UserContext)
 
-    return userContext.state.isAuthenticated ? <Outlet /> : <Navigate to="/login" />;
-};
+    return userContext.state.isAuthenticated ? <Outlet /> : <Navigate to="/login" />
+}
 
-export default Protected;
+export default Protected
