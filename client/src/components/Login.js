@@ -1,13 +1,50 @@
-import React from 'react'
+import React, { useState } from 'react'
 import TextField from '@mui/material/TextField'
 import Button from '@mui/material/Button'
+import { Link } from 'react-router-dom'
 
 const Login = () => {
+    const defaultValues = {
+        username:'',
+        password:''
+    }
+    const [form, setForm] = useState(defaultValues)
+
+    const formSubmit = (e) => {
+        e.preventDefault()
+        
+    }
+    const handleInputChange = (e) => {
+        const { name, value } = e.target
+        setForm(prev => ({ ...prev, [name]: value }) )
+    }
+
     return (
         <div>
-            <TextField id="filled-basic" label="username" variant="filled" required/>
-            <TextField id="filled-basic" label="password" variant="filled" required/>
-            <Button variant="contained">Login</Button>
+            <form onSubmit={formSubmit}>
+                <TextField
+                    id="filled-basic"
+                    label="username"
+                    name="username"
+                    value={form.username}
+                    variant="filled"
+                    required
+                    onChange={handleInputChange}
+                />
+                <TextField
+                    id="filled-basic"
+                    label="password"
+                    variant="filled"
+                    name="password"
+                    value={form.password}
+                    required
+                    onChange={handleInputChange}
+                />
+                <Button type="submit" variant="contained">Login</Button>
+                <Button variant="contained" component={Link} to="/signup">
+                    Signup
+                </Button>
+            </form>
         </div>
     )
 }
