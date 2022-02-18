@@ -4,15 +4,13 @@ import Button from '@mui/material/Button'
 import { Link } from 'react-router-dom'
 
 const Login = () => {
-    const defaultValues = {
+    const [form, setForm] = useState({
         username:'',
         password:''
-    }
-    const [form, setForm] = useState(defaultValues)
+    })
 
     const formSubmit = (e) => {
         e.preventDefault()
-        
     }
     const handleInputChange = (e) => {
         const { name, value } = e.target
