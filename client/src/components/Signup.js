@@ -1,25 +1,28 @@
-import React, {useState, useContext} from 'react'
-import TextField from '@mui/material/TextField'
-import Button from '@mui/material/Button'
+import React, {useState} from 'react'
+import {Alert, Button, TextField} from '@mui/material'
 import { Link } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
 import apis from '../api'
-import { Context as UserContext} from '../context/UserContext'
 
 const Signup = () => {
     let navigate = useNavigate()
-    const userContext = useContext(UserContext)
     const [form, setForm] = useState({
         name:'',
         username:'',
-        password:''
+        password:'',
+    })
+    const [error, setError] = useState({
+        state: false,
+        message: ''
     })
     const formSubmit = async (e) => {
         e.preventDefault()
-        const user = await apis.insertUser({form})
-        await userContext.setIsAuthenticated(true)
-        await userContext.setUser({user})
-        navigate('/board')
+        const user = await apis.insertUser(form)
+        if(user.data.success === true ) { navigate('/login') } 
+        else { 
+            setError(prev => ({ ...prev, message: user.data.message, state: true})) 
+            setForm({name:'',username:'',password:''}) 
+        }
     }
     const handleInputChange =  async (e) => {
         const { name, value } = e.target
@@ -27,6 +30,7 @@ const Signup = () => {
     }
     return (
         <div>
+            {error.state ? <Alert severity="error">{error.message}</Alert>: null }
             <form onSubmit={formSubmit}>
                 <TextField name="name" onChange={handleInputChange} value={form.name} id="filled-basic" label="name" variant="filled" required/>
                 <TextField name="username" onChange={handleInputChange} value={form.username} id="filled-basic" label="username" variant="filled" required/>
