@@ -4,10 +4,11 @@ import Login from './components/Login'
 import Signup from './components/Signup'
 import Home from './components/Home'
 import Protected from './components/Protected'
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route,  } from 'react-router-dom'
 import './App.css'
 
 const App = () => {
+
     return (
         <div className="App">
             <Routes>
