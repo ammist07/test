@@ -4,7 +4,7 @@ jobs:
     docker:
       - image: node:16.14.0
 
-    working_directory: ~/repo/client
+    working_directory: client
 
     steps:
       - checkout
