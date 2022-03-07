@@ -25,7 +25,7 @@ const Login = () => {
                 id: user.data.id,
                 name: user.data.name
             })
-            navigate('/board') 
+            navigate('/') 
         } else {
             setError(prev => ({ ...prev, message: user.data.message, state: true})) 
             setForm({username:'',password:''}) 

@@ -4,7 +4,11 @@ import App from './App'
 import Login from './components/Login'
 import Signup from './components/Signup'
 import Home from './components/Home'
+import Board from './components/Board'
+import UserProfile from './components/UserProfile'
 import { BrowserRouter } from 'react-router-dom'
+import { Provider as UserProvider } from './context/UserContext'
+import React, {useContext} from 'react'
 
 test('Login Page', () => {
     render(
@@ -50,12 +54,68 @@ test('App Page', () => {
     )
 })
 
+
+test('Board Page', () => {
+    render(
+        <BrowserRouter>
+            <Board />
+        </BrowserRouter>
+    )
+})
+
+test("UserGreeter salutes a user", () => {
+    const state = {
+        isAuthenticated: false
+    }
+    render(
+        <UserProvider value={state} >
+            <Board />
+        </UserProvider>
+    );
+    expect(screen.getByText(`Lets Play`)).toBeInTheDocument();
+    });
+
 test('Home Page', () => {
     render(
         <BrowserRouter>
             <Home />
         </BrowserRouter>
     )
-    const playbutton = screen.getByRole('link', { id: 'playbutton'})
+    const playbutton = screen.getByTestId('homebutton')
     expect(playbutton).toBeInTheDocument()
 })
+
+
+test('Cells on Board', () => {
+    render(
+        <BrowserRouter>
+            <Board />
+        </BrowserRouter>
+    )
+    const username_input = screen.getByRole('table')
+    expect(username_input).toBeInTheDocument()
+})
+
+test('Flower in Cells', () => {
+    render(
+        <BrowserRouter>
+            <Board />
+        </BrowserRouter>
+    )
+    const username_input = screen.getByRole('table', {id: 'icon'})
+    expect(username_input).toBeInTheDocument()
+})
+
+
+test('Profile Page test', () => {
+    render(
+        <BrowserRouter>
+            <Home />
+        </BrowserRouter>
+    )
+    const playbutton = screen.getByTestId('profilebutton')
+    expect(playbutton).toBeInTheDocument()
+})
+
+
+
