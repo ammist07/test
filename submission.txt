@@ -1,0 +1,169 @@
+AM ----------------------------------------------------------------
+import React from 'react'
+
+const Board = () => {
+    return  (
+        <div>
+            Board
+        </div>
+    )
+}
+export default Board
+
+
+test('Board Page', () => {
+    render(
+        <BrowserRouter>
+            <Board />
+        </BrowserRouter>
+    )
+})
+
+ <div>
+            {
+                board.hasWon ? <div> won </div>:  
+                <div>
+                    <div>Lets Play</div>
+                    {done ? makeTable(): <div>Loading...</div>}
+                </div>
+            }
+        </div>
+----------------------------------------------------------------
+CN ----------------------------------------------------------------
+import React from 'react'
+import "./Cell.css"
+import LocalFloristIcon from '@mui/icons-material/LocalFlorist';
+
+
+const Cell = ({isLit, flipCellsAroundMe}) => {
+
+    return (
+        <td>
+            <div className="Cell" onClick={handleClick}>
+                <LocalFloristIcon id="icon" sx={{ color: 'pink', fontSize: 40 }} />  
+            </div>
+        </td>
+    )
+
+}
+export default Cell
+
+test('Flower in Cells', () => {
+    render(
+        <BrowserRouter>
+            <Board />
+        </BrowserRouter>
+    )
+    const username_input = screen.getByRole('table', {id: 'icon'})
+    expect(username_input).toBeInTheDocument()
+})
+
+.Cell {
+    height: 100px;
+    width: 100px;
+    border-radius: 1px;
+    background-color: #263238;
+    transition: background-color 0.7s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.Cell-lit {
+    background-color: #00bcd4;
+}
+
+
+NK ----------------------------------------------------------------
+const userContext = useContext(UserContext)
+    const [board, setBoard] = useState({
+        rows: 3,
+        cols: 3,
+        flowerChance: 0.25,
+        hasWon: false,
+        gameBoard: [[]],
+        edit: false
+    })
+
+      const createBoard = async () => {
+        let boardcurr = []
+        for (let y = 0; y < board.rows; y++){
+            let row = []
+            for (let x = 0; x < board.cols; x++){
+                row.push(Math.random() < board.flowerChance)
+            }
+            boardcurr.push(row)
+        }
+        await setBoard(prev => ({
+            ...prev, gameBoard:boardcurr, edit:true
+        }))
+    }
+
+vv ----------------------------------------------------------------
+const flipCellsAround = (cord) => {
+        let boardcurr = board.gameBoard
+        let [y, x] = cord.split("-").map(Number)
+        const flipCell = (y, x) => {
+            if (x >= 0 && x < board.cols && y >= 0 && y < board.rows) {
+                boardcurr[y][x] = !boardcurr[y][x]
+            }
+        }
+        flipCell(y, x)
+        flipCell(y, x - 1)
+        flipCell(y, x + 1)
+        flipCell(y - 1, x)
+        flipCell(y + 1, x)
+        let hasWon = boardcurr.every(row => row.every(cell => !cell))
+        setBoard(prev => ({
+            ...prev,
+            gameBoard: boardcurr,
+            hasWon: hasWon
+        }))
+    }
+
+NV ---------------------------------------------------------------------
+
+import sound from './rename.mp3' 
+
+    let classes = "Cell" + (isLit ? " Cell-lit" : "")
+    let audio = new Audio(sound)
+
+    const handleClick = (evt) => {
+        audio.play()
+        flipCellsAroundMe()
+    }
+
+    {
+        isLit ? <div className="Cell" onClick={handleClick}>
+                    <LocalFloristIcon id="icon" sx={{ color: 'pink', fontSize: 40 }} />  
+                </div> : <div className="Cell" onClick={handleClick}>
+
+                </div>
+    
+    }
+NB ----------------------------------------------------------------
+    const makeTable = () => {
+        let tblBoard = []
+        for (let y = 0; y < board.rows; y++){
+            let row = []
+            for (let x = 0; x < board.cols; x++){
+                let coord = `${y}-${x}`
+                row.push(
+                    <Cell
+                        key={coord}
+                        isLit={board.gameBoard[y][x]}
+                        flipCellsAroundMe={() => flipCellsAround(coord)}
+                    />
+                )
+            }
+            tblBoard.push(<tr key={y}>{row}</tr>)
+        }
+        return (
+            <table className='Board'>
+                <tbody>{tblBoard}</tbody>
+            </table>
+        )
+        
+    }
+
+
+
