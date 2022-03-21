@@ -8,5 +8,6 @@ router.post('/user', UserCtrl.createUser)
 router.get('/user/:id', UserCtrl.getUserById)
 router.get('/user', UserCtrl.getUsers)
 router.post('/login', UserCtrl.checkUser)
+router.post('/game', UserCtrl.addNewGame)
 
 module.exports = router
