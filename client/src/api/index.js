@@ -9,6 +9,8 @@ export const getAllUser = () => api.get('/user')
 export const getUserByID = (id) => api.get(`/movie/${id}`)
 export const chechUser = (payload) => api.post('/login', payload)
 export const addGame = (payload) => api.post('/game', payload)
+export const addToLeaderboard = (payload) => api.post('/leader', payload)
+export const getAll = (payload) => api.post('/getall', payload)
 
 const apis = {
 	insertUser,
@@ -16,6 +18,8 @@ const apis = {
 	getUserByID,
 	chechUser,
 	addGame,
+	addToLeaderboard,
+	getAll,
 }
 
 export default apis

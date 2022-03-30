@@ -11,8 +11,8 @@ const Board = () => {
 	const userContext = useContext(UserContext)
 	let audio_win = new Audio(win)
 	const [board, setBoard] = useState({
-		rows: 3,
-		cols: 3,
+		rows: userContext.state.x,
+		cols: userContext.state.x,
 		flowerChance: 0.25,
 		hasWon: false,
 		gameBoard: [[]],
@@ -33,11 +33,17 @@ const Board = () => {
 	}, [board.edit])
 
 	const addNewGame = async () => {
+		let date = Date.now()
 		if (board.hasWon) {
 			audio_win.play()
 			await apis.addGame({
 				userId: userContext.state.user.id,
-				playedAt: new Date(),
+				playedAt: date,
+				gameTime: board.end - board.start,
+			})
+			await apis.addToLeaderboard({
+				userId: userContext.state.user.id,
+				playedAt: date,
 				gameTime: board.end - board.start,
 			})
 		}

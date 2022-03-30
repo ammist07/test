@@ -1,11 +1,11 @@
 const bcrypt = require('bcryptjs')
 const User = require('../models/user-model')
+const LeaderBoard = require('../models/leader-boards')
 const { ObjectId } = require('mongodb')
 
 const createUser = async (req, res) => {
 	const body = req.body
 	body.password = await bcrypt.hash(body.password, 8)
-	console.log(body)
 	if (!body) {
 		return res.status(400).json({
 			success: false,
@@ -34,7 +34,6 @@ const createUser = async (req, res) => {
 			})
 		})
 		.catch((error) => {
-			console.log('here')
 			return res.json({
 				success: false,
 				message: 'User not created!',
@@ -88,7 +87,6 @@ const checkUser = async (req, res) => {
 const addNewGame = async (req, res) => {
 	try {
 		const body = req.body
-		console.log(body)
 
 		let user = await User.findOne({ _id: ObjectId(body.userId) })
 		if (!user) {
@@ -107,9 +105,49 @@ const addNewGame = async (req, res) => {
 			}
 		)
 		let userChnaged = await User.findOne({ _id: ObjectId(body.userId) })
-		console.log('ere')
 		res.json(userChnaged)
 	} catch (err) {
+		res.status(500).json({ error: err })
+	}
+}
+
+const addLeaderBoard = async (req, res) => {
+	try {
+		const temp = {
+			userId: req.body.userId,
+			playedAt: req.body.playedAt,
+			gameTime: req.body.gameTime,
+		}
+		const leader = new LeaderBoard(temp)
+
+		if (!leader) {
+			return res.json({ success: false, error: err })
+		}
+		leader
+			.save()
+			.then(() => {
+				return res.status(200).json({
+					success: true,
+					id: leader._id,
+				})
+			})
+			.catch((error) => {
+				return res.json({
+					success: false,
+					message: 'Score not added!',
+				})
+			})
+	} catch (e) {
+		res.status(500).json({ error: err })
+	}
+}
+
+const getAllbyId = async (req, res) => {
+	try {
+		const id = req.body.userId
+		const all = await LeaderBoard.find({ userId: id }).sort({ gameTime: 1 })
+		res.json(all)
+	} catch (e) {
 		res.status(500).json({ error: err })
 	}
 }
@@ -120,4 +158,6 @@ module.exports = {
 	getUsers,
 	checkUser,
 	addNewGame,
+	addLeaderBoard,
+	getAllbyId,
 }
